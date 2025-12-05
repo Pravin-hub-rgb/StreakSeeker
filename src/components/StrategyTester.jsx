@@ -6,11 +6,12 @@ import SummaryStats from './StrategyTester/SummaryStats'
 import StrategyInfoBanner from './StrategyTester/StrategyInfoBanner'
 import RiskRewardTable from './StrategyTester/RiskRewardTable'
 import { calculateStrategyResults } from '../utils/calculateStrategyResults'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import TradeLog from './StrategyTester/TradeLog'
 
 export default function StrategyTester() {
-    const { candles, streaks, resetAll } = useStore()
+    const { candles, streaks, setCandles, setStreaks } = useStore()
+    const navigate = useNavigate()
     const hasData = candles.length > 0
 
     // Strategy Settings State
@@ -84,7 +85,7 @@ export default function StrategyTester() {
                         <Link to="/" className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition">
                             ← Back to Main
                         </Link>
-                        <button onClick={resetAll} className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition">
+                        <button onClick={() => { setCandles([]); setStreaks([]); navigate('/'); }} className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition">
                             Reset All Data
                         </button>
                     </div>

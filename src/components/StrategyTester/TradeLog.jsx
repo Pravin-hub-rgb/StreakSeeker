@@ -68,7 +68,12 @@ export default function TradeLog({ trades }) {
             
             return (
               <div key={i} className={`mb-1 ${pnlColor} hover:text-white transition`}>
-                [{String(i + 1).padStart(3, '0')}] {t.tradeDirection} | ENTRY: {entryTime} @ {t.entryPrice} | EXIT: {exitTime} @ {t.exitPrice} | P&L: {t.pnl > 0 ? '+' : ''}{t.pnl} pts | {exitReason}{t.trailed ? ' ✓' : ''}
+                [{String(i + 1).padStart(3, '0')}] {t.tradeDirection} | ENTRY: {entryTime} @ {t.entryPrice.toFixed(2)} | EXIT: {exitTime} @ {t.exitPrice.toFixed(2)} | P&L: {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)} pts | {exitReason} | POINTS: {(() => {
+                  const initialRisk = Math.abs(t.trailDistance);
+                  if (initialRisk === 0) return t.pnl < 0 ? -1 : 0;
+                  const rMultiple = Math.abs(t.pnl) / initialRisk;
+                  return t.pnl < 0 ? -1 : Math.floor(rMultiple);
+                })()} {t.trailed ? ' ✓' : ''}
               </div>
             )
           })}
